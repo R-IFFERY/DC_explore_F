@@ -7,9 +7,9 @@ plt.rcParams['font.sans-serif'] = ['SimHei']   # 用来正常显示中文标签
 plt.rcParams['axes.unicode_minus'] = False     # 用来正常显示负号
 
 # =========================
-# 固定参数
-# =========================
-a = 0
+# 参数
+# ========================
+a = 13
 alpha = np.radians(a)
 dc = 1                  # 占空比
 p = 0                   # 偏移量（当前未使用，保留）
@@ -21,15 +21,18 @@ theta0 = np.radians(30) # 俯仰角幅值（转换为弧度）
 phi = np.radians(90)    # 相位（转换为弧度）
 
 # 参数组
-k_list = [0.2, 0.5, 0.8, 1.1, 1.4, 1.7, 2.0]
-st_list = [0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8]
-periods_list = [9, 16, 12, 16, 20, 20, 20]
-
+# k_list = [0.2, 0.5, 0.8, 1.1, 1.4, 1.7, 2.0]
+# st_list = [0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8]
+# periods_list = [15, 15, 15, 15, 15, 15, 15]
+# periods_list = [9, 12, 12, 16, 16, 16, 18]
+k_list = [0.5]
+st_list = [0.3]
+periods_list = [15]
 # 建立 k 与周期数的映射
 k_periods_map = dict(zip(k_list, periods_list))
 
 # 根输出目录
-base_output_dir = r'D:/Rensq/DC_explore_F/data'
+base_output_dir = r'E:/Rensq/DC_explore_F/data_1Tflow'
 
 # =========================
 # 主循环：遍历全部 k 和 st
@@ -93,7 +96,8 @@ for k in k_list:
         # =========================
         # 前翼x方向
         # =========================
-        x_position1 = np.zeros_like(t)
+        # x 位置定为-10
+        x_position1 = np.full_like(t, -0.0)
         x_velocity1 = np.zeros_like(t)
         x_acceleration1 = np.zeros_like(t)
 
@@ -127,7 +131,7 @@ for k in k_list:
         # =========================
         # 后翼x方向
         # =========================
-        x_position2 = np.full_like(t, 1.5 * c)
+        x_position2 = np.full_like(t, 1.50)
         x_velocity2 = np.zeros_like(t)
         x_acceleration2 = np.zeros_like(t)
 
@@ -144,7 +148,8 @@ for k in k_list:
             h_position2, h_velocity2, h_acceleration2
         ])
 
-        out_filename = os.path.join(output_dir, "motion_params.dat")
+        out_filename = os.path.join(output_dir, f'k{k}st{st}a{a}.dat')
+        # out_filename = os.path.join('E:/Rensq/DC_explore_F/data/all/', f'k{k}st{st}a{a}.dat')
         np.savetxt(out_filename, data, delimiter=' ', fmt='%.8f')
 
         print(f"已完成: k={k}, st={st}, periods={periods}")
@@ -153,3 +158,17 @@ for k in k_list:
         print(f"运动参数文件已保存到: {out_filename}")
 
 print("全部参数组合的数据与图像已生成完成。")
+
+#
+# # 绘制前翼和后翼的俯仰角随时间变化的图像
+# plt.figure(figsize=(12, 6))
+# plt.plot(t, np.degrees(theta_position1), label='前翼俯仰角 (degrees)')
+# plt.plot(t, np.degrees(theta_position2), label='后翼俯仰角 (degrees)')
+# plt.xlabel('时间 (秒)')
+# plt.ylabel('俯仰角 (度)')
+# plt.title(f'k={k}, st={st}, periods={periods}')
+# plt.legend()
+# plt.grid()
+# plt.tight_layout()
+# # plt.savefig(os.path.join(output_dir, "pitch_angles.png"), dpi=300)
+# plt.show()

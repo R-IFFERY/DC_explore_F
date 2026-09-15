@@ -31,10 +31,10 @@ class Config:
     DC_LIST = [1]
 
     # 数据基础路径
-    BASE_DIR = 'D:/Rensq/DC_explore_F/data/'
+    BASE_DIR = 'E:/Rensq/DC_explore_F/data/'
 
     # 统一输出目录：只在这个 heatmap 文件夹输出
-    OUTPUT_DIR = 'D:/Rensq/DC_explore_F/results_a0/heatmap/'
+    OUTPUT_DIR = 'E:/Rensq/DC_explore_F/results_a0/heatmap/'
 
     METRICS = {
         # 升力系数

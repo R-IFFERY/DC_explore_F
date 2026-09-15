@@ -8,19 +8,19 @@ import os
 u = 1.0
 rou = 1.0
 c = 1.0
-st = 0.6
-k = 1.1
-a = 0
-dc = 1
+st = 0.3
+k = 1.7
+a = 11
+dc = 0.01
 # 周期
 f = k * u / np.pi / c
 T = 1.0 / f
 
 # 选定统计的周期编号（从1开始）
-selected_cycle = 10
+selected_cycle = 1
 
-dir_name = f'D:/Rensq/DC_explore_F/data/k{k}/st{st}k{k}/st{st}k{k}a{a}/st{st}k{k}a{a}dc{int(dc)}/'
-filename = f'k{k}st{st}'
+dir_name = f'E:/Rensq/DC_explore_F/data_1Tflow/k{k}/st{st}k{k}/st{st}k{k}a{a}/st{st}k{k}a{a}dc{int(dc*100)}/'
+filename = f'k{k}st{st}a{a}'
 force_dir = dir_name + filename
 save_dir = os.path.join(dir_name, 'One_period')
 os.makedirs(save_dir, exist_ok=True)

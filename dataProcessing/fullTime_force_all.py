@@ -16,20 +16,23 @@ dc = 1
 # k_list = [0.2, 0.5, 0.8, 1.1, 1.4, 1.7, 2.0]
 # st_list = [0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8]
 
-k_list = [1.1]
-st_list = [0.2, 0.3, 0.6]
+k_list = [0.5]
+st_list = [0.6]
+
+base_root = r'E:/Rensq/DC_explore_F/data_1Tflow/'
 
 # 统一保存文件夹（仅存图片）
-save_root = r'D:\Rensq\DC_explore_F\results_a0\full_time_Forceresults'
+# save_root = r'E:\Rensq\DC_explore_F\results_intermittent\full_time_Forceresults'
+save_root = r'E:/Rensq/DC_explore_F/results_a0/fig8'
 os.makedirs(save_root, exist_ok=True)
 
 plt.rcParams.update({
-    'font.size': 12,
-    'axes.titlesize': 12,
-    'axes.labelsize': 12,
-    'xtick.labelsize': 12,
-    'ytick.labelsize': 12,
-    'legend.fontsize': 12,
+    'font.size': 10,
+    'axes.titlesize': 10,
+    'axes.labelsize': 10,
+    'xtick.labelsize': 10,
+    'ytick.labelsize': 10,
+    'legend.fontsize': 10,
     "font.family": "serif",
     "font.serif": ["Times New Roman"],
     "text.usetex": True,
@@ -50,7 +53,7 @@ def process_one_case(st, k):
     k_str = format_num(k)
 
     # 原始数据目录
-    dir_name = f'D:/Rensq/DC_explore_F/data/k{k}/st{st}k{k}/st{st}k{k}a{a}/st{st}k{k}a{a}dc{int(dc)}/'
+    dir_name = base_root + f'k{k}/st{st}k{k}/st{st}k{k}a{a}/st{st}k{k}a{a}dc{int(dc)}/'
     filename = f'k{k}st{st}'
     force_dir = dir_name + filename
     force_path = os.path.join(force_dir, 'force.dat')
@@ -132,14 +135,14 @@ def process_one_case(st, k):
         # ======================
         # 绘图：上下拼接（3张）
         # ======================
-        fig, axes = plt.subplots(3, 1, figsize=(24, 16), sharex=True)
+        fig, axes = plt.subplots(3, 1, figsize=(32, 16), sharex=True)
 
         # --- 升力图 ---
         axes[0].plot(t[start_idx:], cl1[start_idx:], label='Lift Coefficient Wing 1')
         axes[0].plot(t[start_idx:], cl2[start_idx:], label='Lift Coefficient Wing 2')
         axes[0].plot(t[start_idx:], cl_total[start_idx:], label='Total Lift Coefficient', linestyle='--')
         axes[0].set_ylabel('Lift Coefficient (Cl)')
-        axes[0].set_title(f'Lift Coefficient Over Time (k={k_str}, st={st_str})')
+        axes[0].set_title(f'Lift Coefficient Over Time (k={k_str}, st={st_str}, a={a}, dc{int(dc)})')
         axes[0].legend()
         axes[0].grid(True)
 
@@ -148,7 +151,7 @@ def process_one_case(st, k):
         axes[1].plot(t[start_idx:], ct2[start_idx:], label='Thrust Coefficient Wing 2')
         axes[1].plot(t[start_idx:], ct_total[start_idx:], label='Total Thrust Coefficient', linestyle='--')
         axes[1].set_ylabel('Thrust Coefficient (Ct)')
-        axes[1].set_title(f'Thrust Coefficient Over Time (k={k_str}, st={st_str})')
+        axes[1].set_title(f'Thrust Coefficient Over Time (k={k_str}, st={st_str}, a={a})')
         axes[1].legend()
         axes[1].grid(True)
 
@@ -158,21 +161,21 @@ def process_one_case(st, k):
         axes[2].plot(t[start_idx:], cp_total[start_idx:], label='Total Power Coefficient', linestyle='--')
         axes[2].set_xlabel('Time (s)')
         axes[2].set_ylabel('Power Coefficient (Cp)')
-        axes[2].set_title(f'Power Coefficient Over Time (k={k_str}, st={st_str})')
+        axes[2].set_title(f'Power Coefficient Over Time (k={k_str}, st={st_str}, a={a}, dc{int(dc)})')
         axes[2].legend()
         axes[2].grid(True)
 
         plt.tight_layout()
 
-        fig_name = f'k{k_str}st{st_str}.png'
+        fig_name = f'k{k_str}st{st_str}a{a}dc{int(dc)}.png'
         fig_path = os.path.join(save_root, fig_name)
         plt.savefig(fig_path, dpi=300, bbox_inches='tight')
         plt.close(fig)
 
-        print(f'[完成] st={st_str}, k={k_str}')
+        print(f'[完成] st={st_str}, k={k_str}, a={a}, dc={int(dc)} 的受力系数图已保存到: {fig_path}')
 
     except Exception as e:
-        print(f'[报错] st={st_str}, k={k_str}, 错误信息: {e}')
+        print(f'[报错] st={st_str}, k={k_str}, a={a}, dc={int(dc)}, 错误信息: {e}')
 
 
 # ======================

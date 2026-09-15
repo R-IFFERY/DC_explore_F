@@ -28,24 +28,25 @@ a = 0
 dc = 1
 
 # 可自行修改
-k_list  = [0.8]
-st_list = [0.5]
+k_list = [2.0]
+# st_list = [0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8]
+st_list = [0.2]
 
-base_root = r'D:/Rensq/DC_explore_F/data'
-final_save_root = r'D:/Rensq/DC_explore_F/flow/vorticity_results_a0/'
+base_root = r'E:/Rensq/DC_explore_F/data_1Tflow/'
+final_save_root = r'E:/Rensq/DC_explore_F/flow/test'
 os.makedirs(final_save_root, exist_ok=True)
 
 # ==================== 翼型轮廓 ====================
-profile = np.loadtxt(r'/flow/boundary.dat')
+profile = np.loadtxt(r'E:/Rensq/DC_explore_F/flow/boundary.dat')
 x_prof = profile[:, 0] * c
 y_prof = profile[:, 1] * c
 
 # ==================== 新流场中心与绘图区域 ====================
-flow_center_x = 15.0
-flow_center_y = 7.5
+flow_center_x = 0.0
+flow_center_y = 0.0
 
-x_min, x_max = 14.0, 25.0
-y_min, y_max = 3.0, 12.0
+x_min, x_max = -1.0, 20.0
+y_min, y_max = -10, 10
 
 # 机翼整体平移到新流场中心附近
 wing_shift_x = flow_center_x
@@ -64,7 +65,7 @@ x_ticks = np.arange(int(np.ceil(x_min)), int(np.floor(x_max)) + 1, x_tick_step)
 numb = 512
 base_cmap = colormaps['RdBu_r'].resampled(numb)
 new_colors = base_cmap(np.linspace(0, 1, numb))
-vmin, vmax = -20, 20
+vmin, vmax = -30, 30
 
 sigma = 1.0
 vals = np.linspace(vmin, vmax, numb)
@@ -278,7 +279,7 @@ for k in k_list:
         dir3_name = f'st{st}k{k}a{a}dc{int(dc)}/k{k}st{st}/'
         case_dir = os.path.join(base_root, f'k{k}', dir_name, dir2_name, dir3_name)
 
-        print(f'正在处理: st={st}, k={k}')
+        print(f'正在处理: st={st}, k={k}， a={a}')
 
         theta1 = np.radians(30)
         theta2 = np.radians(30)
@@ -295,7 +296,7 @@ for k in k_list:
         cycles_data = scan_cycles_data(case_dir, T)
 
         if not cycles_data:
-            print(f'未找到符合要求的 dat 文件，跳过: st={st}, k={k}')
+            print(f'未找到符合要求的 dat 文件，跳过: st={st}, k={k}, a={a}')
             continue
 
         print(f'共扫描到 {sum(len(c["records"]) for c in cycles_data)} 个 dat 文件')
@@ -351,7 +352,7 @@ for k in k_list:
             all_data.append(cycle_data)
 
         if file_missing:
-            print(f'文件不完整，跳过: st={st}, k={k}')
+            print(f'文件不完整，跳过: st={st}, k={k}, a={a}')
             continue
 
         # ==================== 创建组合图 ====================
@@ -442,7 +443,7 @@ for k in k_list:
             )
 
         # ==================== 保存 ====================
-        final_png_name = f'k{k}st{st}.png'
+        final_png_name = f'k{k}st{st}a{a}.png'
         final_png_path = os.path.join(final_save_root, final_png_name)
         plt.savefig(final_png_path, format='png', bbox_inches='tight', dpi=600)
         plt.close()

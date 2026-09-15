@@ -3,6 +3,13 @@
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
       <excludeFolder url="file://$MODULE_DIR$/data" />
+      <excludeFolder url="file://$MODULE_DIR$/flow" />
+      <excludeFolder url="file://$MODULE_DIR$/results_a0" />
+      <excludeFolder url="file://$MODULE_DIR$/results_aneq0" />
+      <excludeFolder url="file://$MODULE_DIR$/results_intermittent" />
+      <excludeFolder url="file://$MODULE_DIR$/POD_results_continue" />
+      <excludeFolder url="file://$MODULE_DIR$/POD_results" />
+      <excludeFolder url="file://$MODULE_DIR$/data_1Tflow" />
     </content>
     <orderEntry type="jdk" jdkName="data_processing" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />

@@ -27,15 +27,16 @@ a = 0
 dc = 1
 
 # 可自行修改
-k_list = [1.1]
-st_list = [0.2, 0.3, 0.6]
+# k_list =[1.7]
+# st_list = [0.3]
 
 # 示例：
-# k_list = [0.2, 0.5, 0.8, 1.1, 1.4, 1.7, 2.0]
-# st_list = [0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8]
+k_list = [0.2, 0.5, 0.8, 1.1, 1.4, 1.7, 2.0]
+st_list = [0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8]
 
-base_root = r'D:/Rensq/DC_explore_F/data/'
-final_save_root = r'D:/Rensq/DC_explore_F/results_a0/cycle_averaged_results/'
+base_root = r'E:/Rensq/DC_explore_F/data_1Tflow/'
+# final_save_root = r'E:/Rensq/DC_explore_F/results_intermittent/cycle_averaged_results/'
+final_save_root = r'E:/Rensq/DC_explore_F/results_a0/cycle_averaged_results/'
 os.makedirs(final_save_root, exist_ok=True)
 
 # =========================
@@ -43,17 +44,17 @@ os.makedirs(final_save_root, exist_ok=True)
 # =========================
 for k in k_list:
     for st in st_list:
-        dir_name = f'D:/Rensq/DC_explore_F/data/k{k}/st{st}k{k}/st{st}k{k}a{a}/st{st}k{k}a{a}dc{int(dc)}/'
+        dir_name = base_root + f'k{k}/st{st}k{k}/st{st}k{k}a{a}/st{st}k{k}a{a}dc{int(dc)}/'
         filename = f'k{k}st{st}'
         force_dir = dir_name + filename
         force_path = os.path.join(force_dir, 'force.dat')
 
         # 检查文件是否存在
         if not os.path.exists(force_path):
-            print(f'缺少文件，跳过: st={st}, k={k}')
+            print(f'缺少文件，跳过: st={st}, k={k}, a={a}, dc={int(dc*100)}')
             continue
 
-        print(f'正在处理: st={st}, k={k}')
+        print(f'正在处理: st={st}, k={k}, a={a}, dc={int(dc*100)}')
 
         # =========================
         # 读取新 force.dat
@@ -180,7 +181,7 @@ for k in k_list:
             })
 
         if len(results) == 0:
-            print(f'无有效周期数据，跳过: st={st}, k={k}')
+            print(f'无有效周期数据，跳过: st={st}, k={k}, a={a}, dc={int(dc*100)}')
             continue
 
         result_df = pd.DataFrame(results)
@@ -189,7 +190,7 @@ for k in k_list:
         # =========================
         # 只保存到统一文件夹
         # =========================
-        csv_path_all = os.path.join(final_save_root, f'k={k}st={st}.csv')
+        csv_path_all = os.path.join(final_save_root, f'k={k}st={st}a={a}dc={int(dc*100)}.csv')
         result_df.to_csv(csv_path_all, index=False, encoding='utf-8-sig', float_format='%.8e')
 
         # =========================
@@ -205,7 +206,7 @@ for k in k_list:
         plt.plot(period, result_df['cl2_mean'], marker='s', label=r'$\overline{C}_{LH}$')
         plt.plot(period, result_df['cl_total_mean'], marker='^', label=r'$\overline{C}_{LS}$')
         plt.xticks([])
-        plt.title(f'$k={k}, St={st}$')
+        plt.title(f'$k={k}, St={st}, a={a}, dc={int(dc*100)}$')
         plt.legend()
         plt.grid(True)
 
