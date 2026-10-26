@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-plot_fig_pod_dc_H_C2_C4.py
+plot_fig_pod_dc_H_C4.py
 
 针对新的 DC 大周期 POD 结果绘图。
 
@@ -20,17 +20,13 @@ DC：
 
 子图：
     (a) Modal entropy H
-    (b) C2 and C4
+    (b) C4
 
 横坐标：
     DC
 
 不同 k：
     使用不同颜色
-
-C2 / C4：
-    C2 -> 圆形 marker + 实线
-    C4 -> 方形 marker + 虚线
 
 图例：
     不同 k 的图例放在 (a) 子图内部，
@@ -75,7 +71,7 @@ SUMMARY_CSV = os.path.join(
 )
 
 OUT_BASENAME = (
-    "Fig_POD_DC_H_C2_C4"
+    "Fig_POD_DC_H_C4"
 )
 
 
@@ -121,39 +117,35 @@ DC_VALUES = [
 # Y 轴范围
 # ============================================================
 
-# Modal entropy
+# Modal entropy H
 H_YLIM = (
-    0.0,
-    1.0
+    0.3,
+    0.7
 )
 
 H_YTICKS = [
-    0.0,
-    0.2,
+    # 0.2,
+    0.3,
     0.4,
+    0.5,
     0.6,
-    0.8,
-    1.0
+    0.7,
+    # 0.8
 ]
 
 
-# C2 / C4
-CUMULATIVE_YLIM = (
-    0.0,
+# C4
+C4_YLIM = (
+    0.2,
     1.0
 )
 
-CUMULATIVE_YTICKS = [
-    0,
-    # 0.1,
+C4_YTICKS = [
+    # 0.0,
     0.2,
-    # 0.3,
     0.4,
-    # 0.5,
     0.6,
-    # 0.7,
     0.8,
-    # 0.9,
     1.0
 ]
 
@@ -208,16 +200,10 @@ H_MARKER = "D"
 H_LINESTYLE = "-"
 
 
-# C2
-C2_MARKER = "o"
-
-C2_LINESTYLE = "-"
-
-
 # C4
 C4_MARKER = "s"
 
-C4_LINESTYLE = "--"
+C4_LINESTYLE = "-"
 
 
 # ============================================================
@@ -560,70 +546,13 @@ def calculate_normalized_modal_entropy(
 
 
 # ============================================================
-# 读取 C2 / C4 / H
+# 读取 C4 / H
 # ============================================================
 
 def metric(
     row,
     name
 ):
-
-    # ========================================================
-    # C2
-    # ========================================================
-
-    if name == "C2":
-
-        value = first_number(
-            row,
-            [
-                "C2",
-                "c2",
-                "C_2",
-                "c_2"
-            ]
-        )
-
-        if np.isfinite(
-            value
-        ):
-
-            return value
-
-        E1 = first_number(
-            row,
-            [
-                "E1",
-                "e1",
-                "E_1",
-                "e_1"
-            ]
-        )
-
-        E2 = first_number(
-            row,
-            [
-                "E2",
-                "e2",
-                "E_2",
-                "e_2"
-            ]
-        )
-
-        if (
-            np.isfinite(E1)
-            and
-            np.isfinite(E2)
-        ):
-
-            return (
-                E1
-                +
-                E2
-            )
-
-        return np.nan
-
 
     # ========================================================
     # C4
@@ -886,8 +815,6 @@ def extract_data(
 
             "H": [],
 
-            "C2": [],
-
             "C4": [],
 
             "selected_cycles": [],
@@ -908,11 +835,6 @@ def extract_data(
                 "H"
             )
 
-            C2 = metric(
-                row,
-                "C2"
-            )
-
             C4 = metric(
                 row,
                 "C4"
@@ -924,7 +846,6 @@ def extract_data(
 
             for name, value in [
                 ("H", H),
-                ("C2", C2),
                 ("C4", C4)
             ]:
 
@@ -948,12 +869,6 @@ def extract_data(
                 "H"
             ].append(
                 H
-            )
-
-            data[k][
-                "C2"
-            ].append(
-                C2
             )
 
             data[k][
@@ -1005,7 +920,6 @@ def extract_data(
         for key in [
             "dc",
             "H",
-            "C2",
             "C4",
             "n_snapshots"
         ]:
@@ -1188,79 +1102,7 @@ def make_k_legend_handles():
 
 
 # ============================================================
-# 12. C2 / C4 legend
-# ============================================================
-
-def add_c2_c4_legend(
-    ax
-):
-
-    handles = [
-
-        Line2D(
-            [0],
-            [0],
-
-            color="#202020",
-
-            linestyle=C2_LINESTYLE,
-
-            linewidth=LINE_WIDTH,
-
-            marker=C2_MARKER,
-
-            markersize=5,
-
-            markerfacecolor="white",
-
-            markeredgecolor="#202020",
-
-            label=r"$C_2$"
-        ),
-
-        Line2D(
-            [0],
-            [0],
-
-            color="#202020",
-
-            linestyle=C4_LINESTYLE,
-
-            linewidth=LINE_WIDTH,
-
-            marker=C4_MARKER,
-
-            markersize=5,
-
-            markerfacecolor="white",
-
-            markeredgecolor="#202020",
-
-            label=r"$C_4$"
-        ),
-    ]
-
-    legend = ax.legend(
-        handles=handles,
-
-        frameon=False,
-
-        loc="lower right",
-
-        handlelength=1.7,
-
-        handletextpad=0.4,
-
-        labelspacing=0.3,
-
-        borderaxespad=0.35
-    )
-
-    return legend
-
-
-# ============================================================
-# 13. 保存图中数据
+# 12. 保存图中数据
 # ============================================================
 
 def save_plot_data(
@@ -1282,7 +1124,6 @@ def save_plot_data(
         "selected_cycles",
         "n_snapshots",
         "H",
-        "C2",
         "C4",
     ]
 
@@ -1335,11 +1176,6 @@ def save_plot_data(
                             "H"
                         ][i],
 
-                    "C2":
-                        data[k][
-                            "C2"
-                        ][i],
-
                     "C4":
                         data[k][
                             "C4"
@@ -1350,7 +1186,7 @@ def save_plot_data(
 
 
 # ============================================================
-# 14. 主绘图程序
+# 13. 主绘图程序
 # ============================================================
 
 def plot_pod_metrics():
@@ -1463,7 +1299,7 @@ def plot_pod_metrics():
 
 
     # ========================================================
-    # (b) C2 / C4
+    # (b) C4
     # ========================================================
 
     ax = axes[
@@ -1475,33 +1311,6 @@ def plot_pod_metrics():
     )
 
     for k in K_VALUES:
-
-        # ----------------------------------------------------
-        # C2
-        # ----------------------------------------------------
-
-        draw_k_line(
-            ax,
-
-            data[k][
-                "dc"
-            ],
-
-            data[k][
-                "C2"
-            ],
-
-            k=k,
-
-            marker=C2_MARKER,
-
-            linestyle=C2_LINESTYLE
-        )
-
-
-        # ----------------------------------------------------
-        # C4
-        # ----------------------------------------------------
 
         draw_k_line(
             ax,
@@ -1522,21 +1331,17 @@ def plot_pod_metrics():
         )
 
     ax.set_ylabel(
-        r"$C_i$",
+        r"$C_4$",
         rotation=0,
         labelpad=8
     )
 
     ax.set_ylim(
-        CUMULATIVE_YLIM
+        C4_YLIM
     )
 
     ax.set_yticks(
-        CUMULATIVE_YTICKS
-    )
-
-    add_c2_c4_legend(
-        ax
+        C4_YTICKS
     )
 
     panel_label(
@@ -1547,10 +1352,6 @@ def plot_pod_metrics():
 
     # ========================================================
     # Layout
-    #
-    # 原来底部放置全局 k 图例，
-    # 现在 k 图例已经移入 (a)，
-    # 因此适当减小 bottom。
     # ========================================================
 
     fig.subplots_adjust(
@@ -1663,11 +1464,6 @@ def plot_pod_metrics():
     # saved_paths.append(
     #     pdf_path
     # )
-    #
-    #
-    # plt.close(
-    #     fig
-    # )
 
 
     # ========================================================
@@ -1720,7 +1516,7 @@ def plot_pod_metrics():
     )
 
     print(
-        "k      DC      H          C2         C4"
+        "k      DC      H          C4"
     )
 
     print(
@@ -1737,7 +1533,6 @@ def plot_pod_metrics():
                 f"{k:<4.1f}   "
                 f"{dc:<5.2f}   "
                 f"{data[k]['H'][i]:<10.6f} "
-                f"{data[k]['C2'][i]:<10.6f} "
                 f"{data[k]['C4'][i]:<10.6f}"
             )
 
@@ -1747,7 +1542,7 @@ def plot_pod_metrics():
 
 
 # ============================================================
-# 15. Run
+# 14. Run
 # ============================================================
 
 if __name__ == "__main__":

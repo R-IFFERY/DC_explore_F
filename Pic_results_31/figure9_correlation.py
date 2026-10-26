@@ -189,7 +189,7 @@ def main():
             cmap=cmap,
             norm=norm,
             shading="auto",
-            rasterized=False,
+            rasterized=True,
         )
 
         ax.set_xlim(X_MIN, X_MAX)

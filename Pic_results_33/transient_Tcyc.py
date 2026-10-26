@@ -241,7 +241,7 @@ DC_STYLE = {
     },
 
     0.50: {
-        "color": "tab:orange",
+        "color": "tab:green",
         "linestyle": "-",
         "label": r"$DC=0.5$",
     },
@@ -282,7 +282,7 @@ PANEL_LABELS = [
 # 升力
 CL_YLIM = (
     -5.0,
-    10.0
+    12.0
 )
 
 CL_YTICKS = [
@@ -295,7 +295,7 @@ CL_YTICKS = [
 
 # 推力
 CT_YLIM = (
-    -2.0,
+    -3.0,
     3.0
 )
 
@@ -311,7 +311,7 @@ CT_YTICKS = [
 # CP_YLIM = (-5.0, 15.0)
 CP_YLIM = (
     -2.0,
-    7.0
+    8.0
 )
 
 CP_YTICKS = [
@@ -319,7 +319,8 @@ CP_YTICKS = [
     0.0,
     2.0,
     4.0,
-    6.0
+    6.0,
+    8.0
 ]
 
 
